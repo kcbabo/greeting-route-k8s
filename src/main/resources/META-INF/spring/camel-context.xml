@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <camelContext xmlns="http://camel.apache.org/schema/spring">
+    <route id="cbr-route">
+      <from uri="timer:foo?period=3000"/>
+      <transform>
+        <method bean="GreeterBean" method="generateName"/>
+      </transform>
+      <to uri="bean:GreeterBean?method=greet"/>
+      <choice>
+        <when>
+          <simple>${body} contains 'master'</simple>
+          <log message="High praise!"/>
+        </when>
+        <when>
+          <simple>${body} contains 'buddy'</simple>
+          <log message="Nice enough ..."/>
+        </when>
+        <when>
+          <simple>${body} contains 'out of my way'</simple>
+          <log message="That's just rude! :-("/>
+        </when>
+      </choice>
+    </route>
+  </camelContext>
+  
+  <bean id="GreeterBean" class="org.example.GreeterBean"/>
+
+</beans>
