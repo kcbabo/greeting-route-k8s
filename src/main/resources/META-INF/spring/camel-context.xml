@@ -12,7 +12,7 @@
       <transform><method bean="GreeterBean" method="generateName"/></transform>
       <setHeader headerName="Content-Type"><constant>application/xml</constant></setHeader>
       <setHeader headerName="X-KIE-ContentType"><constant>XSTREAM</constant></setHeader>
-      <to uri="http4:kie-app/kie-server/services/rest/server/containers/instances/HelloRulesContainer?authUsername=kieserver&amp;authPassword=redhat*99"/>
+      <to uri="http4:kie-app:8080/kie-server/services/rest/server/containers/instances/HelloRulesContainer?authUsername=kieserver&amp;authPassword=redhat*99"/>
       <transform><method bean="GreeterBean" method="postProcess"/></transform>
       <choice>
         <when>
