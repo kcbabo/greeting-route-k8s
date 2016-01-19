@@ -8,11 +8,12 @@
 
   <camelContext xmlns="http://camel.apache.org/schema/spring">
     <route id="cbr-route">
-      <from uri="timer:foo?period=3000"/>
-      <transform>
-        <method bean="GreeterBean" method="generateName"/>
-      </transform>
-      <to uri="bean:GreeterBean?method=greet"/>
+      <from uri="timer:foo?period=2000"/>
+      <transform><method bean="GreeterBean" method="generateName"/></transform>
+      <setHeader headerName="Content-Type"><constant>application/xml</constant></setHeader>
+      <setHeader headerName="X-KIE-ContentType"><constant>XSTREAM</constant></setHeader>
+      <to uri="http4:${KIE_APP_SERVICE_HOST}/kie-server/services/rest/server/containers/instances/HelloRulesContainer?authUsername=kieserver&amp;authPassword=redhat*99"/>
+      <transform><method bean="GreeterBean" method="postProcess"/></transform>
       <choice>
         <when>
           <simple>${body} contains 'master'</simple>
